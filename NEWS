@@ -33,6 +33,11 @@ Noteworthy changes in release 1.4
   Configure no longer has a --with-irods option; instead build the plugin
   found at <https://github.com/samtools/htslib-plugins>.
 
+* Minor extension of the synced BCF reader API allows to pair SNP/REF
+  or indel/REF records as compatible and pack them into a single 
+  bcf_sr_next_line() call. For examples see the --collapse option in
+  bcftools.
+
 
 Noteworthy changes in release 1.3.2  (13 September 2016)
 
