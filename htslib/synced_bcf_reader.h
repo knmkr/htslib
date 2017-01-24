@@ -69,6 +69,11 @@ extern "C" {
 #define COLLAPSE_ANY    4   // any combination of alleles can be returned by bcf_sr_next_line()
 #define COLLAPSE_SOME   8   // at least some of the ALTs must match
 #define COLLAPSE_BOTH  (COLLAPSE_SNPS|COLLAPSE_INDELS)
+#define COLLAPSE_REF_SNPS   16
+#define COLLAPSE_REF_INDELS 32
+#define COLLAPSE_REF_BOTH   (COLLAPSE_REF_SNPS|COLLAPSE_REF_INDELS)
+#define VCF_SNP_OR_REF(x)   ((x)==VCF_REF || (x)&(VCF_SNP|VCF_MNP))
+#define VCF_INDEL_OR_REF(x) ((x)==VCF_REF || (x)&VCF_INDEL)
 
 typedef struct _bcf_sr_regions_t
 {

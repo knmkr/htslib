@@ -368,7 +368,17 @@ static void collapse_buffer(bcf_srs_t *files, bcf_sr_t *reader)
             if ( !has_snp ) has_snp = 1;
             else line->pos = -1;
         }
+        if ( files->collapse&COLLAPSE_REF_SNPS && VCF_SNP_OR_REF(line_type) )
+        {
+            if ( !has_snp ) has_snp = 1;
+            else line->pos = -1;
+        }
         if ( files->collapse&COLLAPSE_INDELS && line_type&VCF_INDEL )
+        {
+            if ( !has_indel ) has_indel = 1;
+            else line->pos = -1;
+        }
+        if ( files->collapse&COLLAPSE_REF_INDELS && VCF_INDEL_OR_REF(line_type) )
         {
             if ( !has_indel ) has_indel = 1;
             else line->pos = -1;
@@ -615,8 +625,10 @@ static int _reader_match_alleles(bcf_srs_t *files, bcf_sr_t *reader, bcf1_t *tmp
 
             // No matter what the alleles are, as long as they are both SNPs
             if ( files->collapse&COLLAPSE_SNPS && tmpl_type&VCF_SNP && line_type&VCF_SNP ) { irec=i; break; }
+            if ( files->collapse&COLLAPSE_REF_SNPS && VCF_SNP_OR_REF(tmpl_type) && VCF_SNP_OR_REF(line_type) ) { irec=i; break; }
             // ... or indels
             if ( files->collapse&COLLAPSE_INDELS && tmpl_type&VCF_INDEL && line_type&VCF_INDEL ) { irec=i; break; }
+            if ( files->collapse&COLLAPSE_REF_INDELS && VCF_INDEL_OR_REF(tmpl_type) && VCF_INDEL_OR_REF(line_type) ) { irec=i; break; }
 
             // More thorough checking: REFs must match
             if ( tmpl->rlen != line->rlen ) continue;  // different length
